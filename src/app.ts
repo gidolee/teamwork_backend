@@ -1,5 +1,4 @@
 import express from 'express'
-// import itemRoutes from './routes/itemRoutes'
 import { errorHandler } from './middleware/errorHandler'
 
 const app = express()
