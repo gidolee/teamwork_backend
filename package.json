@@ -9,7 +9,7 @@
         "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
         "lint": "prettier-eslint --list-different \"**/*.js\" \"**/*.ts\" \"**/*.tsx\"",
         "format": "prettier-eslint --write --list-different \"**/*.js\" \"**/*.ts\" \"**/*.tsx\"",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "mocha -r ts-node/register 'test/**/*.test.ts'"
     },
     "repository": {
         "type": "git",
@@ -28,6 +28,7 @@
         "@types/mocha": "^10.0.10",
         "@types/node": "^25.3.3",
         "@types/pg": "^8.18.0",
+        "@types/supertest": "^7.2.0",
         "@typescript-eslint/parser": "^8.56.1",
         "chai": "^6.2.2",
         "dotenv": "^17.3.1",
@@ -42,9 +43,11 @@
         "mocha": "^11.7.5",
         "nodemon": "^3.1.14",
         "npm": "^11.6.0",
+        "nyc": "^18.0.0",
         "prettier": "^3.8.1",
         "prettier-eslint": "^16.3.0",
         "prettier-eslint-cli": "^8.0.1",
+        "supertest": "^7.2.2",
         "ts-node": "^10.9.2",
         "typescript": "^5.9.3"
     },
