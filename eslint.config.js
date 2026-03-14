@@ -1,3 +1,5 @@
+import tsParser from '@typescript-eslint/parser';
+
 export default [
     {
         rules: {
@@ -5,4 +7,14 @@ export default [
             'prefer-const': 'error',
         },
     },
-]
+    {
+        files: ['**/*.ts', '**/*.tsx'],
+        languageOptions: {
+            parser: tsParser,
+            parserOptions: {
+                ecmaVersion: 'latest',
+                sourceType: 'module',
+            },
+        },
+    },
+];
