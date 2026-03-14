@@ -3,7 +3,7 @@ import tsParser from '@typescript-eslint/parser';
 export default [
     {
         rules: {
-            semi: 'error',
+            semi: 'off',
             'prefer-const': 'error',
         },
     },
