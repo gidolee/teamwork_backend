@@ -1,10 +1,7 @@
 import tsParser from '@typescript-eslint/parser';
 
-export default [
-    {
-        rules: {
-            semi: 'error',
-            'prefer-const': 'error',
-        },
-    },
-];
+export default {
+    semi: true,
+    singleQuote: true,
+    trailingComma: 'all',
+};
