@@ -1,9 +1,9 @@
-import express from 'express'
+import express from 'express';
 
-const app = express()
+const app = express();
 
 app.get('/ping', (req, res) => {
-    res.status(200).json({ ok: true, message: 'pong' })
-})
+    res.status(200).json({ ok: true, message: 'pong' });
+});
 
-export default app
+export default app;
