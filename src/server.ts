@@ -8,8 +8,8 @@ const startServer = async () => {
         await pool.query('SELECT 1');
         console.log('✅ Database connected successfully');
 
-        app.listen(config, () => {
-            console.log(`🚀 Server running on port ${config}`);
+        app.listen(config.port, () => {
+            console.log(`🚀 Server running on port ${config.port}`);
         });
     } catch (error) {
         console.error('❌ Database connection failed', error);
