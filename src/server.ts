@@ -1,7 +1,6 @@
 import app from './app';
+import config from './config/config';
 import pool from './config/db';
-
-const PORT = process.env.PORT || 3000;
 
 const startServer = async () => {
     try {
@@ -9,8 +8,8 @@ const startServer = async () => {
         await pool.query('SELECT 1');
         console.log('✅ Database connected successfully');
 
-        app.listen(PORT, () => {
-            console.log(`🚀 Server running on port ${PORT}`);
+        app.listen(config, () => {
+            console.log(`🚀 Server running on port ${config}`);
         });
     } catch (error) {
         console.error('❌ Database connection failed', error);
