@@ -1,38 +1,42 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import pool from '../config/db';
-import { hashPassword, comparePassword } from '../helpers/hashPassword';
-import { CreateUserBody, SignInBody } from '../types';
+import { ZodError } from 'zod';
+import { createUserService, signInService } from '../services/authService';
+import { createUserSchema, signInSchema } from '../validators/authValidator';
 
 export const createUser = async (
-    req: Request<object, object, CreateUserBody>,
+    req: Request,
     res: Response
 ): Promise<void> => {
-    const {
-        firstName,
-        lastName,
-        email,
-        password,
-        gender,
-        jobRole,
-        department,
-        address,
-    } = req.body;
-
-    if (!firstName || !lastName || !email || !password) {
-        res.status(400).json({
-            status: 'error',
-            error: 'firstName, lastName, email and password are required.',
-        });
-        return;
-    }
-
     try {
-        const existing = await pool.query(
-            'SELECT id FROM users WHERE email = $1',
-            [email]
-        );
-        if (existing.rows.length > 0) {
+        // 1. Validate the body using the schema
+        const validatedData = createUserSchema.parse(req.body);
+
+        // 2. Call the service
+        const result = await createUserService(validatedData as any);
+
+        // 3. Send response
+        res.status(201).json({
+            status: 'success',
+            data: {
+                message: 'User account successfully created',
+                ...result,
+            },
+        });
+    } catch (error: any) {
+        // Handle Zod Validation Errors
+        if (error instanceof ZodError) {
+            res.status(400).json({
+                status: 'error',
+                error: error.issues.map((e) => ({
+                    field: e.path.join('.'),
+                    message: e.message,
+                })),
+            });
+            return;
+        }
+
+        // Handle Business Logic Errors (thrown by Service)
+        if (error.message === 'EMAIL_EXISTS') {
             res.status(409).json({
                 status: 'error',
                 error: 'An account with that email already exists.',
@@ -40,106 +44,55 @@ export const createUser = async (
             return;
         }
 
-        const hashedPassword = await hashPassword(password);
-
-        const result = await pool.query(
-            `INSERT INTO users
-         (first_name, last_name, email, password, gender, job_role, department, address)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-       RETURNING id, email, is_admin`,
-            [
-                firstName,
-                lastName,
-                email,
-                hashedPassword,
-                gender,
-                jobRole,
-                department,
-                address,
-            ]
-        );
-
-        const newUser = result.rows[0];
-
-        const token = jwt.sign(
-            {
-                id: newUser.id,
-                email: newUser.email,
-                is_admin: newUser.is_admin,
-            },
-            process.env.JWT_SECRET as string,
-            { expiresIn: '24h' }
-        );
-
-        res.status(201).json({
-            status: 'success',
-            data: {
-                message: 'User account successfully created',
-                token,
-                userId: newUser.id,
-            },
-        });
-    } catch (error) {
+        // Default Internal Server Error
+        console.error('Create User Error:', error);
         res.status(500).json({
             status: 'error',
-            error: (error as Error).message,
+            error: 'Internal server error',
         });
     }
 };
 
-export const signIn = async (
-    req: Request<object, object, SignInBody>,
-    res: Response
-): Promise<void> => {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        res.status(400).json({
-            status: 'error',
-            error: 'Email and password are required.',
-        });
-        return;
-    }
-
+export const signIn = async (req: Request, res: Response): Promise<void> => {
     try {
-        const result = await pool.query(
-            'SELECT * FROM users WHERE email = $1',
-            [email]
-        );
+        // 1. Validate the body
+        const validatedData = signInSchema.parse(req.body);
 
-        if (result.rows.length === 0) {
-            res.status(401).json({
-                status: 'error',
-                error: 'Invalid email or password.',
-            });
-            return;
-        }
+        // 2. Call the service
+        const result = await signInService(validatedData);
 
-        const user = result.rows[0];
-        const passwordMatch = await comparePassword(password, user.password);
-
-        if (!passwordMatch) {
-            res.status(401).json({
-                status: 'error',
-                error: 'Invalid email or password.',
-            });
-            return;
-        }
-
-        const token = jwt.sign(
-            { id: user.id, email: user.email, is_admin: user.is_admin },
-            process.env.JWT_SECRET as string,
-            { expiresIn: '24h' }
-        );
-
+        // 3. Send response
         res.status(200).json({
             status: 'success',
-            data: { token, userId: user.id },
+            data: result,
         });
-    } catch (error) {
+    } catch (error: any) {
+        // Handle Zod Validation Errors
+        if (error instanceof ZodError) {
+            res.status(400).json({
+                status: 'error',
+                error: error.issues.map((e) => ({
+                    field: e.path.join('.'),
+                    message: e.message,
+                })),
+            });
+            return;
+        }
+
+        // Handle Business Logic Errors (thrown by Service)
+        if (error.message === 'INVALID_CREDENTIALS') {
+            res.status(401).json({
+                status: 'error',
+                error: 'Invalid email or password.',
+            });
+            return;
+        }
+
+        // Default Internal Server Error
+        console.error('Sign In Error:', error);
         res.status(500).json({
             status: 'error',
-            error: (error as Error).message,
+            error: 'Internal server error',
         });
     }
 };

@@ -2,16 +2,16 @@ import { Request } from 'express';
 
 export interface User {
     id: number;
-    first_name: string;
-    last_name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
-    gender: string;
-    job_role: string;
-    department: string;
-    address: string;
-    is_admin: boolean;
-    created_on: Date;
+    gender?: string;
+    jobRole?: string;
+    department?: string;
+    address?: string;
+    isAdmin: boolean;
+    createdOn: Date;
 }
 
 export interface Article {
@@ -52,7 +52,7 @@ export interface FeedItem {
 export interface JwtPayload {
     id: number;
     email: string;
-    is_admin: boolean;
+    isAdmin: boolean;
 }
 
 export interface AuthRequest extends Request {
