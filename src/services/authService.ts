@@ -1,100 +1,3 @@
-// import pool from '../config/db';
-// import { hashPassword, comparePassword } from '../helpers/hashPassword';
-// import jwt from 'jsonwebtoken';
-// import { CreateUserBody, SignInBody } from '../types';
-
-// export const createUserService = async (data: CreateUserBody) => {
-//     const {
-//         firstName,
-//         lastName,
-//         email,
-//         password,
-//         gender,
-//         jobRole,
-//         department,
-//         address,
-//     } = data;
-
-//     // Check if user exists
-//     const existing = await pool.query('SELECT id FROM users WHERE email = $1', [
-//         email,
-//     ]);
-
-//     if (existing.rows.length > 0) {
-//         throw new Error('EMAIL_EXISTS');
-//     }
-
-//     // Hash password
-//     const hashedPassword = await hashPassword(password);
-
-//     // Insert user
-//     const result = await pool.query(
-//         `INSERT INTO users
-//         (first_name, last_name, email, password, gender, job_role, department, address)
-//         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-//         RETURNING id, email, is_admin`,
-//         [
-//             firstName,
-//             lastName,
-//             email,
-//             hashedPassword,
-//             gender,
-//             jobRole,
-//             department,
-//             address,
-//         ]
-//     );
-
-//     const user = result.rows[0];
-
-//     // Generate token
-//     const token = jwt.sign(
-//         {
-//             id: user.id,
-//             email: user.email,
-//             is_admin: user.is_admin,
-//         },
-//         process.env.JWT_SECRET as string,
-//         { expiresIn: '24h' }
-//     );
-
-//     return {
-//         userId: user.id,
-//         token,
-//     };
-// };
-
-// export const signInService = async (data: SignInBody) => {
-//     const { email, password } = data;
-
-//     const result = await pool.query('SELECT * FROM users WHERE email = $1', [
-//         email,
-//     ]);
-
-//     if (result.rows.length === 0) {
-//         throw new Error('INVALID_CREDENTIALS');
-//     }
-
-//     const user = result.rows[0];
-
-//     const passwordMatch = await comparePassword(password, user.password);
-
-//     if (!passwordMatch) {
-//         throw new Error('INVALID_CREDENTIALS');
-//     }
-
-//     const token = jwt.sign(
-//         { id: user.id, email: user.email, is_admin: user.is_admin },
-//         process.env.JWT_SECRET as string,
-//         { expiresIn: '24h' }
-//     );
-
-//     return {
-//         userId: user.id,
-//         token,
-//     };
-// };
-
 import pool from '../config/db';
 import jwt from 'jsonwebtoken';
 import { hashPassword, comparePassword } from '../helpers/hashPassword';
@@ -191,3 +94,13 @@ export const signInService = async (data: SignInBody) => {
         token,
     };
 };
+
+// services/authService.ts
+export class AuthService {
+    async createUser(data: any) {
+        // ... logic
+    }
+    async signIn(data: any) {
+        // ... logic
+    }
+}
