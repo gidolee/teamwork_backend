@@ -95,12 +95,7 @@ export const signInService = async (data: SignInBody) => {
     };
 };
 
-// services/authService.ts
 export class AuthService {
-    async createUser(data: any) {
-        // ... logic
-    }
-    async signIn(data: any) {
-        // ... logic
-    }
+    async createUser(data: any) {}
+    async signIn(data: any) {}
 }
