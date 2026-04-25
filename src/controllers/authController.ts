@@ -103,32 +103,31 @@ import { AuthService } from '../services/authService';
 import { createUserSchema, signInSchema } from '../validators/authValidator';
 
 export class AuthController {
-  
     constructor(private authService: AuthService) {}
-
 
     createUser = async (req: Request, res: Response): Promise<void> => {
         try {
             const validatedData = createUserSchema.parse(req.body);
-            
-     
+
             const result = await this.authService.createUser(validatedData);
 
             res.status(201).json({
                 status: 'success',
                 data: {
                     message: 'User account successfully created',
-                    ..result,
+                    result,
                 },
             });
         } catch (error: any) {
             this.handleError(res, error, 'Create User Error', {
-                'EMAIL_EXISTS': { status: 409, message: 'An account with that email already exists.' }
+                EMAIL_EXISTS: {
+                    status: 409,
+                    message: 'An account with that email already exists.',
+                },
             });
         }
     };
 
- 
     signIn = async (req: Request, res: Response): Promise<void> => {
         try {
             const validatedData = signInSchema.parse(req.body);
@@ -140,13 +139,20 @@ export class AuthController {
             });
         } catch (error: any) {
             this.handleError(res, error, 'Sign In Error', {
-                'INVALID_CREDENTIALS': { status: 401, message: 'Invalid email or password.' }
+                INVALID_CREDENTIALS: {
+                    status: 401,
+                    message: 'Invalid email or password.',
+                },
             });
         }
     };
 
-
-    private handleError(res: Response, error: any, logLabel: string, businessErrors: Record<string, {status: number, message: string}>) {
+    private handleError(
+        res: Response,
+        error: any,
+        logLabel: string,
+        businessErrors: Record<string, { status: number; message: string }>
+    ) {
         if (error instanceof ZodError) {
             return res.status(400).json({
                 status: 'error',
