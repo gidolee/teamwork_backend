@@ -26,7 +26,7 @@ const authenticate = async (
         if (!user) {
             res.status(401).json({
                 status: 'error',
-                error: 'Invalid token. User not found.',
+                error: 'Invalid token.',
             });
             return;
         }

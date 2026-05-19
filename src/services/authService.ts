@@ -1,14 +1,17 @@
 import pool from '../config/db';
 import jwt from 'jsonwebtoken';
 import { hashPassword, comparePassword } from '../helpers/hashPassword';
-import { CreateUserBody, SignInBody } from '../types';
+import {
+    FIND_USER_BY_EMAIL,
+    FIND_USER_ID_BY_EMAIL,
+    CREATE_USER,
+} from '../queries/authQueries';
 
 export class AuthService {
     async createUser(data: any) {
         const {
             firstName,
             lastName,
-            email,
             password,
             gender,
             jobRole,
@@ -16,10 +19,9 @@ export class AuthService {
             address,
         } = data;
 
-        const existing = await pool.query(
-            'SELECT id FROM users WHERE email = $1',
-            [email]
-        );
+        const email = data.email.toLowerCase();
+
+        const existing = await pool.query(FIND_USER_ID_BY_EMAIL, [email]);
 
         if (existing.rows.length > 0) {
             throw new Error('An account with that email already exists.');
@@ -27,22 +29,16 @@ export class AuthService {
 
         const hashedPassword = await hashPassword(password);
 
-        const result = await pool.query(
-            `INSERT INTO users
-        (first_name, last_name, email, password, gender, job_role, department, address)
-        VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-        RETURNING id, email, is_admin`,
-            [
-                firstName,
-                lastName,
-                email,
-                hashedPassword,
-                gender,
-                jobRole,
-                department,
-                address,
-            ]
-        );
+        const result = await pool.query(CREATE_USER, [
+            firstName,
+            lastName,
+            email,
+            hashedPassword,
+            gender,
+            jobRole,
+            department,
+            address,
+        ]);
 
         const user = result.rows[0];
 
@@ -63,12 +59,10 @@ export class AuthService {
     }
 
     async signIn(data: any) {
-        const { email, password } = data;
+        const password = data.password;
+        const email = data.email.toLowerCase();
 
-        const result = await pool.query(
-            'SELECT * FROM users WHERE email = $1',
-            [email]
-        );
+        const result = await pool.query(FIND_USER_BY_EMAIL, [email]);
 
         if (result.rows.length === 0) {
             throw new Error('Invalid email or password.');
@@ -99,10 +93,7 @@ export class AuthService {
     }
 
     async finduser(email: string) {
-        const result = await pool.query(
-            'SELECT * FROM users WHERE email = $1',
-            [email]
-        );
+        const result = await pool.query(FIND_USER_BY_EMAIL, [email]);
         return result.rows[0];
     }
 }
