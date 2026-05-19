@@ -17,11 +17,6 @@ export const createUserSchema = z.object({
     address: z.string().optional(),
 });
 
-// export const signInSchema = z.object({
-//     email: z.string().email('Invalid email address'),
-//     password: z.string().min(1, 'Password is required'),
-// });
-
 export const signInSchema = z.object({
     email: z.string().email('Invalid email'),
     password: z.string().min(1, 'Password is required'),

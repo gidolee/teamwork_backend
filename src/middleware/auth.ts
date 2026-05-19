@@ -1,12 +1,13 @@
 import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { AuthRequest, JwtPayload } from '../types';
+import { AuthService } from '../services/authService';
 
-const authenticate = (
+const authenticate = async (
     req: AuthRequest,
     res: Response,
     next: NextFunction
-): void => {
+): Promise<void> => {
     const token = req.headers.token as string | undefined;
 
     if (!token) {
@@ -20,6 +21,15 @@ const authenticate = (
     try {
         const secret = process.env.JWT_SECRET as string;
         const decoded = jwt.verify(token, secret) as JwtPayload;
+        const authService = new AuthService();
+        const user = await authService.finduser(decoded.email);
+        if (!user) {
+            res.status(401).json({
+                status: 'error',
+                error: 'Invalid token. User not found.',
+            });
+            return;
+        }
         req.user = decoded;
         next();
     } catch {
