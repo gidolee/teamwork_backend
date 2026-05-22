@@ -6,9 +6,11 @@ import {
     FIND_USER_ID_BY_EMAIL,
     CREATE_USER,
 } from '../queries/authQueries';
+import { SignInBody } from '../types';
+import { CreateUserBody } from '../types/user';
 
 export class AuthService {
-    async createUser(data: any) {
+    async createUser(data: CreateUserBody) {
         const {
             firstName,
             lastName,
@@ -58,7 +60,7 @@ export class AuthService {
         };
     }
 
-    async signIn(data: any) {
+    async signIn(data: SignInBody) {
         const password = data.password;
         const email = data.email.toLowerCase();
 
