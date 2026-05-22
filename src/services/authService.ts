@@ -6,8 +6,8 @@ import {
     FIND_USER_ID_BY_EMAIL,
     CREATE_USER,
 } from '../queries/authQueries';
-import { SignInBody } from '../types';
-import { CreateUserBody } from '../types/user';
+
+import { CreateUserBody, SignInBody } from '../types/user';
 
 export class AuthService {
     async createUser(data: CreateUserBody) {
