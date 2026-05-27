@@ -13,7 +13,11 @@ export const validateSchema = <T extends z.ZodTypeAny>(
         res: Response,
         next: NextFunction
     ): void => {
-        const validationResult = schema.safeParse(req.body);
+        const validationResult = schema.safeParse({
+            body: req.body,
+            query: req.query,
+            params: req.params,
+        });
 
         if (!validationResult.success) {
             res.status(400).json({
@@ -23,8 +27,9 @@ export const validateSchema = <T extends z.ZodTypeAny>(
             return;
         }
 
-        // Overwrite the req.body with validated data
-        req.body = validationResult.data;
+        // validationResult.data may be typed generically; assert any to access body
+        const parsed: any = validationResult.data;
+        req.body = parsed.body;
 
         next();
     };

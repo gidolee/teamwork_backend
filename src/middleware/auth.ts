@@ -22,7 +22,7 @@ const authenticate = async (
         const secret = process.env.JWT_SECRET as string;
         const decoded = jwt.verify(token, secret) as JwtPayload;
         const authService = new AuthService();
-        const user = await authService.finduser(decoded.email);
+        const user = await authService.finduser(String(decoded.id));
         if (!user) {
             res.status(401).json({
                 status: 'error',

@@ -5,9 +5,6 @@ app.use(express.json());
 app.get('/health', (req, res) => {
     res.send({ message: 'it is working' });
 });
-app.get('/ping', (req, res) => {
-    res.status(200).json({ ok: true, message: 'pong' });
-});
 
 app.use('/api/v1/auth', authRoute);
 export default app;
