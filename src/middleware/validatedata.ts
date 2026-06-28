@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 interface TypedRequest<T> extends express.Request {
     body: T;
+    validatedData?: z.infer<T>;
 }
 
 export const validateSchema = <T extends z.ZodTypeAny>(
@@ -29,7 +30,7 @@ export const validateSchema = <T extends z.ZodTypeAny>(
 
         // validationResult.data may be typed generically; assert any to access body
         const parsed: any = validationResult.data;
-        req.body = parsed.body;
+        req.validatedData = parsed.body;
 
         next();
     };
