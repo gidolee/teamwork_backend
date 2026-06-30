@@ -5,19 +5,37 @@ export class AuthController {
     private authService = new AuthService();
 
     createUser = async (req: Request, res: Response) => {
-        const result = await this.authService.createUser(req.body);
+        try {
+            const result = await this.authService.createUser(req.body);
 
-        return res.status(201).json({
-            status: 'success',
-            data: {
-                message: 'User account successfully created',
-                result,
-            },
-        });
+            return res.status(201).json({
+                status: 'success',
+                data: {
+                    message: 'User account successfully created',
+                    result,
+                },
+            });
+        } catch (error) {
+            return res.status(400).json({
+                status: 'error',
+                data: {
+                    message: (error as Error).message,
+                },
+            });
+        }
     };
 
     signIn = async (req: Request, res: Response) => {
         const result = await this.authService.signIn(req.body);
+
+        return res.status(200).json({
+            status: 'success',
+            data: result,
+        });
+    };
+
+    updateUser = async (req: Request, res: Response) => {
+        const result = await this.authService.updateUser(req.body);
 
         return res.status(200).json({
             status: 'success',

@@ -5,9 +5,10 @@ import {
     FIND_USER_BY_EMAIL,
     FIND_USER_ID_BY_EMAIL,
     CREATE_USER,
+    UPDATE_USER_ROLE,
 } from '../queries/authQueries';
 
-import { CreateUserBody, SignInBody } from '../types/user';
+import { CreateUserBody, SignInBody, UpdateUserRoleBody } from '../types/user';
 
 export class AuthService {
     async createUser(data: CreateUserBody) {
@@ -44,20 +45,7 @@ export class AuthService {
 
         const user = result.rows[0];
 
-        const token = jwt.sign(
-            {
-                id: user.id,
-                email: user.email,
-                is_admin: user.is_admin,
-            },
-            process.env.JWT_SECRET as string,
-            { expiresIn: '24h' }
-        );
-
-        return {
-            userId: user.id,
-            token,
-        };
+        return user;
     }
 
     async signIn(data: SignInBody) {
@@ -91,6 +79,23 @@ export class AuthService {
         return {
             userId: user.id,
             token,
+        };
+    }
+
+    async updateUser(data: UpdateUserRoleBody) {
+        const email = data.email.toLowerCase();
+
+        const result = await pool.query(FIND_USER_BY_EMAIL, [email]);
+
+        if (result.rows.length === 0) {
+            throw new Error('User not found.');
+        }
+
+        const user = result.rows[0];
+        await pool.query(UPDATE_USER_ROLE, [data.isAdmin, email]);
+
+        return {
+            userId: user.id,
         };
     }
 

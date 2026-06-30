@@ -6,7 +6,7 @@ const adminOnly = (
     res: Response,
     next: NextFunction
 ): void => {
-    if (!req.user?.isAdmin) {
+    if (!req.user?.is_admin) {
         res.status(403).json({
             status: 'error',
             error: 'Access denied. Admins only.',

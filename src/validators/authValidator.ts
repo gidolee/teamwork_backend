@@ -26,6 +26,14 @@ export const signInSchema = z.object({
     }),
 });
 
+export const updateUserSchema = z.object({
+    body: z.object({
+        email: z.string().email('Invalid email'),
+        isAdmin: z.boolean().optional(),
+    }),
+});
+
 // These types will automatically match your validation rules
 export type CreateUserType = z.infer<typeof createUserSchema>;
 export type SignInType = z.infer<typeof signInSchema>;
+export type UpdateUserType = z.infer<typeof updateUserSchema>;

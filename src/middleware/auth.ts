@@ -8,7 +8,9 @@ const authenticate = async (
     res: Response,
     next: NextFunction
 ): Promise<void> => {
-    const token = req.headers.token as string | undefined;
+    const token = req.headers.authorization?.split(' ')[1] as
+        | string
+        | undefined;
 
     if (!token) {
         res.status(401).json({
@@ -22,7 +24,7 @@ const authenticate = async (
         const secret = process.env.JWT_SECRET as string;
         const decoded = jwt.verify(token, secret) as JwtPayload;
         const authService = new AuthService();
-        const user = await authService.finduser(String(decoded.id));
+        const user = await authService.finduser(String(decoded.email));
         if (!user) {
             res.status(401).json({
                 status: 'error',

@@ -8,3 +8,6 @@ INSERT INTO users
 VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
 RETURNING id, email, is_admin
 `;
+
+export const UPDATE_USER_ROLE =
+    'UPDATE users SET is_admin = $1 WHERE email = $2 RETURNING id';
