@@ -28,7 +28,7 @@ export interface SignInBody {
     password: string;
 }
 
-export interface UpdateUserRoleBody {
+export interface UpdateUserRole {
     email: string;
     isAdmin: boolean;
 }

@@ -6,7 +6,7 @@ export const CREATE_USER = `
 INSERT INTO users
 (first_name, last_name, email, password, gender, job_role, department, address)
 VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-RETURNING id, email, is_admin
+RETURNING first_name, last_name, email, is_admin
 `;
 
 export const UPDATE_USER_ROLE =

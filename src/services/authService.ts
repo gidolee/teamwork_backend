@@ -8,7 +8,7 @@ import {
     UPDATE_USER_ROLE,
 } from '../queries/authQueries';
 
-import { CreateUserBody, SignInBody, UpdateUserRoleBody } from '../types/user';
+import { CreateUserBody, SignInBody, UpdateUserRole } from '../types/user';
 
 export class AuthService {
     async createUser(data: CreateUserBody) {
@@ -82,7 +82,7 @@ export class AuthService {
         };
     }
 
-    async updateUser(data: UpdateUserRoleBody) {
+    async updateUser(data: UpdateUserRole) {
         const email = data.email.toLowerCase();
 
         const result = await pool.query(FIND_USER_BY_EMAIL, [email]);
