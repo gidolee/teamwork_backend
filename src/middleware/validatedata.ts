@@ -22,6 +22,7 @@ export const validateSchema = <T extends z.ZodTypeAny>(
 
         if (!validationResult.success) {
             res.status(400).json({
+                status: 'error',
                 message: 'Validation failed',
                 errors: validationResult.error.issues,
             });
