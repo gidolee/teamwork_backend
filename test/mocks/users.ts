@@ -119,7 +119,7 @@ export const wrongCreateUserDetails = [
     {
         username: 'moyo',
         firstName: 'moyosore',
-        lastName: 'kmoyosore',
+        lastName: undefined,
         email: 'moyosore@gmail.com',
         password: 'moyosore123',
         gender: 'female',

@@ -57,7 +57,7 @@ describe('user tests', () => {
                 .post(createUserUrl)
                 .set('Accept', 'application/json')
                 .set('Authorization', `Bearer ${adminToken}`)
-                .send(wrongCreateUserDetails[7]) // undefined lastName entry
+                .send(wrongCreateUserDetails[5]) // undefined lastName entry
                 .end((err, res) => {
                     // console.log('res.body', res.body);
                     expect(res.body).to.be.an('object');
