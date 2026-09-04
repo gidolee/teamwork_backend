@@ -8,9 +8,7 @@ const authenticate = async (
     res: Response,
     next: NextFunction
 ): Promise<void> => {
-    const token = req.headers.authorization?.split(' ')[1] as
-        | string
-        | undefined;
+    const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
         res.status(401).json({
