@@ -1,8 +1,6 @@
 on:
-    push:
-
     pull_request:
-
+        types: [opened, synchronize, reopened]
 jobs:
     lint-js:
         name: Ensure JavaScript/TypeScript was formatted
