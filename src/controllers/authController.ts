@@ -26,20 +26,38 @@ export class AuthController {
     };
 
     signIn = async (req: Request, res: Response) => {
-        const result = await this.authService.signIn(req.body);
+        try {
+            const result = await this.authService.signIn(req.body);
 
-        return res.status(200).json({
-            status: 'success',
-            data: result,
-        });
+            return res.status(200).json({
+                status: 'success',
+                data: result,
+            });
+        } catch (error) {
+            return res.status(401).json({
+                status: 'error',
+                data: {
+                    message: (error as Error).message,
+                },
+            });
+        }
     };
 
     updateUser = async (req: Request, res: Response) => {
-        const result = await this.authService.updateUser(req.body);
+        try {
+            const result = await this.authService.updateUser(req.body);
 
-        return res.status(200).json({
-            status: 'success',
-            data: result,
-        });
+            return res.status(200).json({
+                status: 'success',
+                data: result,
+            });
+        } catch (error) {
+            return res.status(401).json({
+                status: 'error',
+                data: {
+                    message: (error as Error).message,
+                },
+            });
+        }
     };
 }

@@ -25,6 +25,7 @@ const authenticate = async (
         const decoded = jwt.verify(token, secret) as JwtPayload;
         const authService = new AuthService();
         const user = await authService.finduser(String(decoded.email));
+        // console.log('this is the sign in user', user);
         if (!user) {
             res.status(401).json({
                 status: 'error',
