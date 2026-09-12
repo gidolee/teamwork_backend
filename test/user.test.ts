@@ -97,5 +97,99 @@ describe('user tests', () => {
                     done();
                 });
         });
+
+        it('should return email is required is missing', (done) => {
+            request(app)
+                .post('/api/v1/auth/login')
+                .set('Accept', 'application/json')
+                .send(invalidSigninDetails[0]) // undefined email
+                .end((err, res) => {
+                    // console.log('res.body', res.body);
+                    expect(res.body).to.be.an('object');
+                    expect(res.status).to.equal(400);
+                    expect(res.body.status).to.equal('error');
+                    done();
+                });
+        });
+        it('should fail when email format is invalid', (done) => {
+            request(app)
+                .post(createUserUrl)
+                .set('Accept', 'application/json')
+                .set('Authorization', `Bearer ${adminToken}`)
+                .send(wrongCreateUserDetails[1]) // invalid email format
+                .end((err, res) => {
+                    expect(res.body).to.be.an('object');
+                    expect(res.status).to.equal(400);
+                    expect(res.body.status).to.equal('error');
+                    done();
+                });
+        });
+
+        it('should fail when firstName contains a space', (done) => {
+            request(app)
+                .post(createUserUrl)
+                .set('Accept', 'application/json')
+                .set('Authorization', `Bearer ${adminToken}`)
+                .send(wrongCreateUserDetails[4]) // spaced firstName
+                .end((err, res) => {
+                    expect(res.body).to.be.an('object');
+                    expect(res.status).to.equal(400);
+                    expect(res.body.status).to.equal('error');
+                    done();
+                });
+        });
+
+        it('should fail when firstName is too short', (done) => {
+            request(app)
+                .post(createUserUrl)
+                .set('Accept', 'application/json')
+                .set('Authorization', `Bearer ${adminToken}`)
+                .send(wrongCreateUserDetails[5]) // short firstName
+                .end((err, res) => {
+                    expect(res.body).to.be.an('object');
+                    expect(res.status).to.equal(400);
+                    expect(res.body.status).to.equal('error');
+                    done();
+                });
+        });
+        it('should fail when lastName is missing', (done) => {
+            request(app)
+                .post(createUserUrl)
+                .set('Accept', 'application/json')
+                .set('Authorization', `Bearer ${adminToken}`)
+                .send(wrongCreateUserDetails[6]) // undefined lastName
+                .end((err, res) => {
+                    expect(res.body).to.be.an('object');
+                    expect(res.status).to.equal(400);
+                    expect(res.body.status).to.equal('error');
+                    done();
+                });
+        });
+        it('should fail when lastName contains a space', (done) => {
+            request(app)
+                .post(createUserUrl)
+                .set('Accept', 'application/json')
+                .set('Authorization', `Bearer ${adminToken}`)
+                .send(wrongCreateUserDetails[7]) // spaced lastName
+                .end((err, res) => {
+                    expect(res.body).to.be.an('object');
+                    expect(res.status).to.equal(400);
+                    expect(res.body.status).to.equal('error');
+                    done();
+                });
+        });
+        it('should fail when department is missing', (done) => {
+            request(app)
+                .post(createUserUrl)
+                .set('Accept', 'application/json')
+                .set('Authorization', `Bearer ${adminToken}`)
+                .send(wrongCreateUserDetails[10]) // undefined department
+                .end((err, res) => {
+                    expect(res.body).to.be.an('object');
+                    expect(res.status).to.equal(400);
+                    expect(res.body.status).to.equal('error');
+                    done();
+                });
+        });
     });
 });

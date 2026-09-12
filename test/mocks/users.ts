@@ -44,17 +44,6 @@ export const wrongCreateUserDetails = [
         address: '3, howareyou str',
     },
 
-    // email contain space
-    {
-        firstName: 'moyosore',
-        lastName: 'kmoyosore',
-        email: 'moyoso  re@gmail.com',
-        password: 'moyosore123',
-        gender: 'female',
-        jobRole: 'employee',
-        department: 'Accounting',
-        address: '3, howareyou str',
-    },
     // invalid email format
     {
         username: 'moyo',
@@ -151,40 +140,7 @@ export const wrongCreateUserDetails = [
         department: 'Accounting',
         address: '3, howareyou str',
     },
-    // password undefined
-    {
-        username: 'moyo',
-        firstName: 'moyosore',
-        lastName: 'kmoyosore',
-        email: 'moyosore@gmail.com',
-        gender: 'female',
-        jobRole: 'employee',
-        department: 'Accounting',
-        address: '3, howareyou str',
-    },
-    // password length short
-    {
-        username: 'moyo',
-        firstName: 'moyosore',
-        lastName: 'kmoyosore',
-        email: 'moyosore@gmail.com',
-        password: 'mo123',
-        gender: 'female',
-        jobRole: 'employee',
-        department: 'Accounting',
-        address: '3, howareyou str',
-    },
-    // undefinde gender
-    {
-        username: 'moyo',
-        firstName: 'moyosore',
-        lastName: 'kmoyosore',
-        email: 'moyosore@gmail.com',
-        password: 'moyosore123',
-        jobRole: 'employee',
-        department: 'Accounting',
-        address: '3, howareyou str',
-    },
+
     // undefined jobrole
     {
         username: 'moyo',
