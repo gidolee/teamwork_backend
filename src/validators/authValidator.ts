@@ -15,8 +15,7 @@ export const createUserSchema = z.object({
             .string()
             .min(6, { message: 'Password must be at least 6 characters' }),
         gender: z.string().optional(),
-        jobRole: z.string().optional(),
-        department: z.string().optional(),
+        department: z.string().min(1, { message: 'Department is required' }),
         address: z.string().optional(),
     }),
 });
