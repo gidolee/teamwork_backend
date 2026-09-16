@@ -4,10 +4,12 @@ export const createUserSchema = z.object({
     body: z.object({
         firstName: z
             .string()
-            .min(3, { message: 'First name must be at least 3 characters' }),
+            .min(3, { message: 'First name must be at least 3 characters' })
+            .regex(/^\S+$/, { message: 'First name cannot contain spaces' }),
         lastName: z
             .string()
-            .min(2, { message: 'Last name must be at least 2 characters' }),
+            .min(3, { message: 'Last name must be at least 3 characters' })
+            .regex(/^\S+$/, { message: 'Last name cannot contain spaces' }),
         email: z.string().email({ message: 'Invalid email address' }),
         password: z
             .string()
