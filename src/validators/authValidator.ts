@@ -4,7 +4,7 @@ export const createUserSchema = z.object({
     body: z.object({
         firstName: z
             .string()
-            .min(2, { message: 'First name must be at least 2 characters' }),
+            .min(3, { message: 'First name must be at least 3 characters' }),
         lastName: z
             .string()
             .min(2, { message: 'Last name must be at least 2 characters' }),
