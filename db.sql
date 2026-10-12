@@ -1,14 +1,30 @@
-CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  first_name VARCHAR(50) NOT NULL,
-  last_name VARCHAR(50) NOT NULL,
-  email VARCHAR(100) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  gender VARCHAR(20),
-  job_role VARCHAR(100),
-  department VARCHAR(255),
-  address TEXT,
-  is_admin BOOLEAN DEFAULT FALSE,
-  created_on TIMESTAMP DEFAULT NOW()
-);
+-- CREATE TABLE users (
+--   id SERIAL PRIMARY KEY,
+--   first_name VARCHAR(50) NOT NULL,
+--   last_name VARCHAR(50) NOT NULL,
+--   email VARCHAR(100) UNIQUE NOT NULL,
+--   password VARCHAR(255) NOT NULL,
+--   gender VARCHAR(20),
+--   job_role VARCHAR(100),
+--   department VARCHAR(255),
+--   address TEXT,
+--   is_admin BOOLEAN DEFAULT FALSE,
+--   created_on TIMESTAMP DEFAULT NOW()
+-- );
 
+-- CREATE TABLE articles (
+--         id SERIAL PRIMARY KEY,
+--         title CHARACTER VARYING NOT NULL,
+--         article CHARACTER VARYING NOT NULL,
+--         user_id INTEGER NOT NULL,
+--         flagged BOOLEAN DEFAULT false NOT NULL,
+--         flagged_at DATE DEFAULT NULL,
+--         created_at timestamp with time zone NOT NULL,
+--         updated_at DATE NOT NULL,
+--         category_id INTEGER NOT NULL,
+--         FOREIGN KEY (user_id) 
+--         REFERENCES users (id)
+--         );
+--         ALTER TABLE articles ADD COLUMN IF NOT EXISTS color_id INTEGER;
+--         `
+-- );
