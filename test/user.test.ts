@@ -29,7 +29,6 @@ describe('user tests', () => {
 
                 .send(users[2])
                 .end((err, res) => {
-                    // console.log('res.body', res.body);
                     expect(res.body).to.be.an('object');
                     expect(res.status).to.equal(201);
                     // expect(res.body.status).to.equal(201);
